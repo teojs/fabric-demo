@@ -1,0 +1,75 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[less]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "javascript.suggest.autoImports": true,
+  "files.exclude": {
+    "**/.swc": true,
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "files.readonlyInclude": {
+    "types/components.d.ts": true,
+    "types/auto-import.d.ts": true,
+    "types/typed-router.d.ts": true,
+    "src/service/types/api.d.ts": false,
+  },
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "vue-router",
+    "console",
+  ],
+  "cSpell.words": [
+    "amap",
+    "astro",
+    "Attachement",
+    "Attributify",
+    "babylonjs",
+    "CPUV",
+    "direc",
+    "EASEIN",
+    "Ecom",
+    "epcc",
+    "favourite",
+    "heran",
+    "heranmedia",
+    "HERANMEDIARESOURCECONTENTSERVICE",
+    "hezong",
+    "iconify",
+    "ipcity",
+    "jsapi",
+    "LOCA",
+    "mdieye",
+    "mdieyeoff",
+    "nocheck",
+    "nums",
+    "ogrp",
+    "oreach",
+    "PBRMATERIAL",
+    "pois",
+    "setz",
+    "spreadsheetml",
+    "stime",
+    "TAUV",
+    "thum",
+    "tmedia",
+    "tregion",
+    "uicolor",
+    "unocss",
+    "viewerjs",
+    "vnode",
+    "vuemap",
+    "vueuse",
+    "ying",
+    "yoyo"
+  ],
+}

@@ -1,0 +1,28 @@
+{
+	"初始化 Vue setup 模版": {
+		"scope": "vue",
+		"prefix": "!setup",
+		"body": [
+      "<script setup lang=\"ts\">",
+      "import { definePage } from 'vue-router/auto'",
+      "",
+      "definePage({",
+      "  meta: {",
+      "    title: '${1:page title}',",
+      "    isMenu: false,",
+      "    sort: 1,",
+      "  },",
+      "})",
+      "</script>",
+      "",
+      "<template>",
+      "  new page",
+      "</template>",
+      "",
+      "<style scoped lang=\"less\">",
+      "</style>",
+      ""
+		],
+		"description": "初始化 Vue 模版"
+	}
+}

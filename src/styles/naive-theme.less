@@ -1,0 +1,36 @@
+/* naive ui 重写 */
+
+.n-base-icon {
+  box-sizing: content-box;
+}
+
+.n-card-header__main {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.n-image-preview-overlay {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.n-image-preview-toolbar {
+  transform: none;
+  margin-left: -144px;
+  .n-base-icon:nth-child(1) {
+    position: fixed;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.4rem;
+    color: rgba(var(--color-gray-light), 1);
+  }
+  .n-base-icon:nth-child(2) {
+    position: fixed;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.4rem;
+    color: rgba(var(--color-gray-light), 1);
+  }
+}

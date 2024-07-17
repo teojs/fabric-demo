@@ -1,0 +1,34 @@
+@keyframes v-skeleton-loading {
+  0% {
+    background: var(--skeleton-start);
+  }
+  40% {
+    background: var(--skeleton-end);
+  }
+  80% {
+    background: var(--skeleton-start);
+  }
+  100% {
+    background: var(--skeleton-start);
+  }
+}
+
+.v-skeleton {
+  --skeleton-start: #eee;
+  --skeleton-end: #ddd;
+  .dark & {
+    --skeleton-start: #373739;
+    --skeleton-end: #18181c;
+  }
+
+  height: 100%;
+  width: 100%;
+  transition: --skeleton-start 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    --skeleton-end 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: 2s v-skeleton-loading infinite cubic-bezier(0.36, 0, 0.64, 1);
+  background-color: var(--skeleton-start);
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}

@@ -1,0 +1,138 @@
+.animation-default {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.58, 0.59, 0.55, 1.41);
+  animation-fill-mode: backwards;
+}
+
+.animate-none {
+  animation: none;
+  animation-duration: 0s;
+  transition-delay: 0s;
+  transition-duration: 0s;
+  display: none;
+}
+
+/** 放大缩小效果 */
+@keyframes pulse-animate {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+.pulse-enter-active,
+.pulse-animate {
+  animation-name: pulse-animate;
+  .animation-default;
+}
+.pulse-leave-active {
+  animation-name: pulse-animate;
+  .animation-default;
+  animation-direction: reverse;
+}
+
+/** 从右边进入 */
+@keyframes right-animate {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+}
+.right-enter-active,
+.right-animate {
+  animation-name: right-animate;
+  .animation-default;
+}
+.right-leave-active {
+  .animate-none;
+}
+
+/** 从下边进入 */
+@keyframes bottom-animate {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+.bottom-enter-active,
+.bottom-animate {
+  animation-name: bottom-animate;
+  .animation-default;
+}
+.bottom-leave-active {
+  animation-name: bottom-animate;
+  .animation-default;
+  animation-direction: reverse;
+}
+
+/** 从上边进入 */
+@keyframes top-animate {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+}
+.top-enter-active,
+.top-animate {
+  animation-name: top-animate;
+  .animation-default;
+}
+.top-leave-active {
+  animation-name: top-animate;
+  .animation-default;
+  animation-direction: reverse;
+}
+
+/** 宽度过渡动画 */
+@keyframes width-animate {
+  0% {
+    opacity: 0;
+    width: 0;
+  }
+}
+.width-animate {
+  animation-name: width-animate;
+  .animation-default;
+}
+
+/** 登录切换1 */
+@keyframes zoom-in-animate {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+@keyframes zoom-out-animate {
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+.zoom-enter-active {
+  animation-name: zoom-in-animate;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: backwards;
+  position: fixed;
+  inset: 0;
+}
+.zoom-leave-active {
+  animation-name: zoom-out-animate;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: backwards;
+  position: fixed;
+  inset: 0;
+}
+
+/** 从右边进入 */
+.right-in-out-enter-active,
+.right-in-out-animate {
+  animation-name: right-animate;
+  .animation-default;
+}
+.right-in-out-leave-active {
+  animation-name: right-animate;
+  .animation-default;
+  animation-direction: reverse;
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+          
+    <!-- For new browsers - multisize ico  -->
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="/favicon.ico">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>%VITE_APP_TITLE%</title>
+  </head>
+  <body id="app">
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+  <script>
+    document.addEventListener('dragstart', function (event) {
+      if (event.target.tagName === 'A' || event.target.tagName === 'IMG') {
+        event.preventDefault()
+      }
+    })
+  </script>
+</html>
