@@ -4,6 +4,7 @@ import * as fabric from 'fabric'
 import {
   computed, onMounted, ref,
 } from 'vue'
+import FabricCanvas from '@/components/fabric-canvas.vue'
 
 import * as THREE from 'three'
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
@@ -16,8 +17,7 @@ definePage({
   },
 })
 
-const canvasRef = ref<HTMLCanvasElement>()
-const canvas = ref<fabric.Canvas>()
+const canvasInst = ref<InstanceType<typeof FabricCanvas>>()
 
 const buttonRef = ref<HTMLCanvasElement>()
 
@@ -28,29 +28,29 @@ let camera: THREE.PerspectiveCamera
 // let controls: OrbitControls;
 
 function setDrawing() {
-  if (canvas.value) {
-    if (canvas.value.isDrawingMode) {
-      canvas.value.isDrawingMode = false
+  if (canvasInst.value?.canvas) {
+    if (canvasInst.value.canvas.isDrawingMode) {
+      canvasInst.value.canvas.isDrawingMode = false
       return
     }
-    canvas.value.isDrawingMode = true
+    canvasInst.value.canvas.isDrawingMode = true
 
-    const pencilBrush = new fabric.PencilBrush(canvas.value)
+    const pencilBrush = new fabric.PencilBrush(canvasInst.value.canvas)
     pencilBrush.color = '#ffcc00'
     pencilBrush.width = 10
-    canvas.value.freeDrawingBrush = pencilBrush
+    canvasInst.value.canvas.freeDrawingBrush = pencilBrush
   }
 }
 
 function toJson() {
-  console.log(canvas.value?.toJSON())
+  console.log(canvasInst.value?.canvas?.toJSON())
 }
 
 const isRotating = ref(false)
 function initThreeJs() {
   const container = threeCanvasRef.value
 
-  if (!container || !canvas.value) return
+  if (!container || !canvasInst.value?.canvas) return
 
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xffeeff)
@@ -96,8 +96,8 @@ function initThreeJs() {
     left: 0,
     top: 0,
   })
-  canvas.value.add(threeScene)
-  canvas.value.centerObject(threeScene)
+  canvasInst.value.canvas.add(threeScene)
+  canvasInst.value.canvas.centerObject(threeScene)
 
   if (!buttonRef.value) return
 
@@ -129,7 +129,7 @@ function initThreeJs() {
     },
   })
   ;(function render() {
-    canvas.value.renderAll()
+    canvasInst.value.canvas.renderAll()
     fabric.util.requestAnimFrame(render)
   })()
 
@@ -149,17 +149,7 @@ function initThreeJs() {
 }
 
 onMounted(() => {
-  canvas.value = new fabric.Canvas(canvasRef.value, {
-    width: 1000,
-    height: 800,
-    isDrawingMode: false,
-    backgroundColor: '#eeeeee',
-    enableRetinaScaling: true,
-    skipOffscreen: true,
-    controlsAboveOverlay: false,
-  })
-
-  canvas.value.selectionColor = 'rgba(255,111,0,0.3)'
+  if (!canvasInst.value?.canvas) return
 
   const textValue = 'Fabric 画板'
   const text = new fabric.Textbox(textValue, {
@@ -181,32 +171,32 @@ onMounted(() => {
       textValue
     ),
   })
-  canvas.value.add(text)
-  canvas.value.centerObjectH(text)
+  canvasInst.value.canvas.add(text)
+  canvasInst.value.canvas.centerObjectH(text)
 
-  canvas.value.on('mouse:wheel', function(opt) {
-    const e = opt.e
-    if (!e.ctrlKey || !canvas.value) {
-      return
-    }
-    const newZoom = canvas.value.getZoom() + e.deltaY / 300
-    canvas.value.zoomToPoint(
-      new fabric.Point({
-        x: e.offsetX,
-        y: e.offsetY,
-      }),
-      newZoom
-    )
+  // canvasInst.value.canvas.on('mouse:wheel', function(opt) {
+  //   const e = opt.e
+  //   if (!e.ctrlKey || !canvasInst.value.canvas) {
+  //     return
+  //   }
+  //   const newZoom = canvasInst.value.canvas.getZoom() + e.deltaY / 300
+  //   canvasInst.value.canvas.zoomToPoint(
+  //     new fabric.Point({
+  //       x: e.offsetX,
+  //       y: e.offsetY,
+  //     }),
+  //     newZoom
+  //   )
 
-    e.preventDefault()
-    return false
-  })
+  //   e.preventDefault()
+  //   return false
+  // })
 
   initThreeJs()
 })
 
 const layers = computed(() => {
-  return canvas.value?.getObjects().map((obj) => {
+  return canvasInst.value?.canvas?.getObjects().map((obj) => {
     return {
       name: obj.type,
       thumb: obj.toDataURL(),
@@ -217,7 +207,7 @@ const layers = computed(() => {
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative w-screen h-screen">
     <div
       class="bg-white fixed z-100 flex flex-col gap-10px p-10px top-20px left-20px rd-6px"
     >
@@ -226,16 +216,16 @@ const layers = computed(() => {
         :key="i"
         class="flex gap-10px items-center"
       >
-        <i
+        <!-- <i
           v-if="layer.visible"
           class="i-mdi:eye text-16px"
-          @click="canvas.item(i).visible = false"
+          @click="canvasInst.value.canvas.item(i).visible = false"
         />
         <i
           v-else
           class="i-mdi:eye-off text-16px"
-          @click="canvas.item(i).visible = true"
-        />
+          @click="canvasInst.value.canvas.item(i).visible = true"
+        /> -->
         <div class="w-100px h-50px rd-4px flex-center bg-gray/10">
           <img
             :src="layer.thumb"
@@ -273,12 +263,7 @@ const layers = computed(() => {
         </n-button>
       </n-button-group>
     </div>
-    <canvas
-      id="canvas"
-      ref="canvasRef"
-      width="300"
-      height="300"
-    />
+    <fabric-canvas ref="canvasInst" />
     <div ref="threeCanvasRef" class="hidden" />
     <button
       ref="buttonRef"
