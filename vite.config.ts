@@ -15,7 +15,6 @@ import eslintPlugin from 'vite-plugin-eslint'
 import type { UserConfigExport, ConfigEnv } from 'vite'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import { select } from '@inquirer/prompts'
-import VueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default async({ command }: ConfigEnv): Promise<UserConfigExport> => {
@@ -70,7 +69,6 @@ export default async({ command }: ConfigEnv): Promise<UserConfigExport> => {
         failOnWarning: false,
         failOnError: false,
       }),
-      VueDevTools(),
     ],
     resolve: {
       alias: {
@@ -78,7 +76,7 @@ export default async({ command }: ConfigEnv): Promise<UserConfigExport> => {
       },
     },
     server: {
-      port: 8022,
+      port: 8020,
       host: '127.0.0.1',
       proxy: {
         '/api': {

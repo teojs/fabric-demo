@@ -13,7 +13,6 @@ definePage({
     title: '首页',
     sort: 0,
     noAuth: true,
-    layout: 'blank',
   },
 })
 
@@ -44,7 +43,6 @@ function setDrawing() {
 }
 
 function toJson() {
-  // console.log(JSON.stringify(canvas));
   console.log(canvas.value?.toJSON())
 }
 
@@ -152,12 +150,13 @@ function initThreeJs() {
 
 onMounted(() => {
   canvas.value = new fabric.Canvas(canvasRef.value, {
-    width: innerWidth,
-    height: innerHeight,
+    width: 1000,
+    height: 800,
     isDrawingMode: false,
     backgroundColor: '#eeeeee',
     enableRetinaScaling: true,
     skipOffscreen: true,
+    controlsAboveOverlay: false,
   })
 
   canvas.value.selectionColor = 'rgba(255,111,0,0.3)'
@@ -209,8 +208,9 @@ onMounted(() => {
 const layers = computed(() => {
   return canvas.value?.getObjects().map((obj) => {
     return {
-      name: obj.name,
+      name: obj.type,
       thumb: obj.toDataURL(),
+      visible: obj.visible,
     }
   })
 })
@@ -219,15 +219,24 @@ const layers = computed(() => {
 <template>
   <div class="relative">
     <div
-      class="bg-dark fixed w-100px z-100 flex flex-col gap-10px p-10px top-20px left-20px text-white rd-6px"
+      class="bg-white fixed z-100 flex flex-col gap-10px p-10px top-20px left-20px rd-6px"
     >
       <div
         v-for="(layer, i) in layers"
         :key="i"
-        class="flex gap-10px"
+        class="flex gap-10px items-center"
       >
-        <i class="i-mdi:eye" />
-        <div class="w-100px h-50px rd-4px">
+        <i
+          v-if="layer.visible"
+          class="i-mdi:eye text-16px"
+          @click="canvas.item(i).visible = false"
+        />
+        <i
+          v-else
+          class="i-mdi:eye-off text-16px"
+          @click="canvas.item(i).visible = true"
+        />
+        <div class="w-100px h-50px rd-4px flex-center bg-gray/10">
           <img
             :src="layer.thumb"
             alt=""
@@ -239,11 +248,30 @@ const layers = computed(() => {
         </div>
       </div>
     </div>
-    <div
-      class="fixed w-100px z-100 flex gap-10px p-10px left-50% top-20px -translate-x-50%"
-    >
-      <button @click="setDrawing">画笔</button>
-      <button @click="toJson">Json</button>
+    <div class="fixed z-100 left-50% top-20px -translate-x-50%">
+      <n-button-group size="small">
+        <n-button
+          round
+          strong
+          secondary
+          @click="setDrawing"
+        >
+          <template #icon>
+            <i class="i-material-symbols:brush" />
+          </template>
+        </n-button>
+
+        <n-button
+          round
+          strong
+          secondary
+          @click="toJson"
+        >
+          <template #icon>
+            <i class="i-carbon:data-unstructured" />
+          </template>
+        </n-button>
+      </n-button-group>
     </div>
     <canvas
       id="canvas"
