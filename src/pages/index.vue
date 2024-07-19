@@ -4,10 +4,10 @@ import * as fabric from 'fabric'
 import {
   computed, onMounted, ref,
 } from 'vue'
-import FabricCanvas from '@/components/fabric-canvas.vue'
+import FabricVue from '@/components/fabric-vue/index.vue'
 
 import * as THREE from 'three'
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 definePage({
   meta: {
@@ -17,7 +17,7 @@ definePage({
   },
 })
 
-const canvasInst = ref<InstanceType<typeof FabricCanvas>>()
+const canvasInst = ref<InstanceType<typeof FabricVue>>()
 
 const buttonRef = ref<HTMLCanvasElement>()
 
@@ -68,13 +68,13 @@ function initThreeJs() {
   )
   renderer.setPixelRatio(window.devicePixelRatio)
 
-  container.appendChild(renderer.domElement)
+  // container.appendChild(renderer.domElement)
 
-  // controls = new OrbitControls(camera, renderer.domElement);
-  // controls.enableDamping = true;
-  // controls.enableZoom = false;
-  // controls.enablePan = false;
-  // controls.enableRotate = false;
+  const controls = new OrbitControls(camera, renderer.domElement)
+  controls.enableDamping = true
+  controls.enableZoom = false
+  controls.enablePan = false
+  controls.enableRotate = false
 
   const geometry = new THREE.BoxGeometry(1, 1, 1)
   const material = new THREE.MeshBasicMaterial({
@@ -263,7 +263,7 @@ const layers = computed(() => {
         </n-button>
       </n-button-group>
     </div>
-    <fabric-canvas ref="canvasInst" />
+    <fabric-vue ref="canvasInst" />
     <div ref="threeCanvasRef" class="hidden" />
     <button
       ref="buttonRef"

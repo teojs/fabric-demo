@@ -17,14 +17,14 @@ const props = withDefaults(
   }
 )
 
-const canvasWrapEl = ref<HTMLDivElement>()
+const workspaceEl = ref<HTMLDivElement>()
 const canvas = shallowRef<fabric.Canvas>()
-const workspace = shallowRef<fabric.Rect>()
+const drawingBoard = shallowRef<fabric.Rect>()
 function initWorkspace() {
   if (!canvas.value) {
     canvas.value = new fabric.Canvas('fabric-canvas', {
-      width: canvasWrapEl.value?.clientWidth,
-      height: canvasWrapEl.value?.clientHeight,
+      width: workspaceEl.value?.clientWidth,
+      height: workspaceEl.value?.clientHeight,
       fireRightClick: true, // 启用右键，button的数字为3
       stopContextMenu: true, // 禁止默认右键菜单
       controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
@@ -34,29 +34,29 @@ function initWorkspace() {
       ...props.canvasOptions,
     })
 
-    workspace.value = new fabric.Rect({
+    drawingBoard.value = new fabric.Rect({
       id: 'workspace',
       width: props.width,
       height: props.height,
       // strokeWidth: 1,
       // stroke: 'rgba(0,0,0,0.5)',
       fill: 'rgba(255,255,255,1)',
-      hasControls: false,
-      selectable: false,
+      // hasControls: false,
+      // selectable: false,
       hoverCursor: 'default',
     })
-    canvas.value.add(workspace.value)
-    canvas.value.centerObject(workspace.value)
-    canvas.value.clipPath = workspace.value
+    canvas.value.add(drawingBoard.value)
+    canvas.value.centerObject(drawingBoard.value)
+    canvas.value.clipPath = drawingBoard.value
     setWorkspaceZoom()
   }
 }
 
 function getScale() {
-  if (!workspace.value) return 1
-  return fabric.util.findScaleToFit(workspace.value, {
-    width: canvasWrapEl.value?.offsetWidth || 1000,
-    height: canvasWrapEl.value?.offsetHeight || 600,
+  if (!drawingBoard.value) return 1
+  return fabric.util.findScaleToFit(drawingBoard.value, {
+    width: workspaceEl.value?.offsetWidth || 1000,
+    height: workspaceEl.value?.offsetHeight || 600,
   })
 }
 
@@ -75,13 +75,13 @@ const resizeBars = ref<
   }[]
 >([])
 function initResizeBar() {
-  if (!canvas.value || !workspace.value) return
+  if (!canvas.value || !drawingBoard.value) return
   const viewportTransform = canvas.value.viewportTransform
   const [scaleX, , , scaleY, offsetX, offsetY] = viewportTransform || []
-  const wsWidth = workspace.value.width * scaleX
-  const wsHeight = workspace.value.height * scaleY
-  const wsLeft = workspace.value.left * scaleX
-  const wsTop = workspace.value.top * scaleY
+  const wsWidth = drawingBoard.value.width * scaleX
+  const wsHeight = drawingBoard.value.height * scaleY
+  const wsLeft = drawingBoard.value.left * scaleX
+  const wsTop = drawingBoard.value.top * scaleY
   const bWidth = 30
   const bHeight = 6
   const bPadding = 10
@@ -150,7 +150,7 @@ function initZoom() {
 function initResize() {
   if (!canvas.value) return
 
-  useResizeObserver(canvasWrapEl, (entries) => {
+  useResizeObserver(workspaceEl, (entries) => {
     const entry = entries[0]
     const { width, height } = entry.contentRect
 
@@ -202,7 +202,7 @@ defineExpose({
 </script>
 
 <template>
-  <div id="canvas-wrap" ref="canvasWrapEl">
+  <div id="workspace" ref="workspaceEl">
     <canvas
       id="fabric-canvas"
       width="300"
@@ -229,7 +229,7 @@ defineExpose({
 </template>
 
 <style scoped lang="less">
-#canvas-wrap {
+#workspace {
   width: 100%;
   height: 100%;
   position: relative;
